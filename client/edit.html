@@ -1,0 +1,92 @@
+<template name="uaButton">
+  <button type="button" id="at-nav-button" class="btn {{#if currentUser}}btn-transparent btn-xs{{/if}}{{#unless currentUser}}btn-success{{/unless}}">{{text}}</button>
+</template>
+
+<template name="toolbar">
+  <div class="glass btn-toolbar">
+    {{> uaButton}}
+    {{#if isInRole 'editor'}}
+    <button class="btn btn-transparent btn-xs" id="addSlide"><span class="glyphicon glyphicon-plus"></span></button>
+    <button class="btn btn-transparent btn-xs" id="removeSlide"><span class="glyphicon glyphicon-minus"></span></button>
+    <button class="btn btn-transparent btn-xs" id="editSlide" data-toggle="modal" data-target="#editModal"><span class="glyphicon glyphicon-pencil"></span></button>
+    {{/if}}
+  </div>
+  {{> editMd}}
+</template>
+
+<template name="editMd">
+  <div class="modal fade" id="editModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+	{{#with context}}
+	<div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Edit: {{id}}</h4>
+	</div>
+	<div class="modal-body" style="max-height:80vh;overflow-x:visible;overflow-y:overlay">
+	  <form class="form-horizontal">
+	    <div class="row">
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">x</label><div class="col-sm-8"><input type="number" class="form-control" id="x" value="{{x}}" /></div></div>
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">y</label><div class="col-sm-8"><input type="number" class="form-control" id="y" value="{{y}}" /></div></div>
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">z</label><div class="col-sm-8"><input type="number" class="form-control" id="z" value="{{z}}" /></div></div>
+	    </div>
+	    <div class="row">
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">r</label><div class="col-sm-8"><input type="number" class="form-control" id="r" value="{{r}}" /></div></div>
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">phi</label><div class="col-sm-8"><input type="number" class="form-control" id="phi" value="{{phi}}" /></div></div>
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">scale</label><div class="col-sm-8"><input type="number" class="form-control" id="scale" value="{{scale}}" /></div></div>
+	    </div>
+	    <div class="row">
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">rot x</label><div class="col-sm-8"><input type="number" class="form-control" id="rx" value="{{rotateX}}" /></div></div>
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">rot y</label><div class="col-sm-8"><input type="number" class="form-control" id="ry" value="{{rotateY}}" /></div></div>
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">rot z</label><div class="col-sm-8"><input type="number" class="form-control" id="rz" value="{{rotateZ}}" /></div></div>
+	    </div>
+	    <div class="row">
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">prev</label><div class="col-sm-8"><select id="prev" class="form-control">
+	      {{#each prevList ..}}<option value="{{v}}" selected="{{selectedPrev ..}}">{{l}}</option>{{/each}}
+	      </select></div></div>
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">next</label><div class="col-sm-8"><select id="next" class="form-control">
+	      {{#each nextList ..}}<option value="{{v}}" selected="{{selectedNext ..}}">{{l}}</option>{{/each}}
+	      </select></div></div>
+	    </div>
+	    <div class="row">
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">slide style</label><div class="col-sm-8"><select id="style" class="form-control">
+	      {{#each styles}}<option value="{{v}}" selected="{{selectedStyle ..}}">{{l}}</option>{{/each}}
+	      </select></div></div>
+	      <div class="form-group col-sm-4"><label class="control-label col-sm-4">world style</label><div class="col-sm-8"><select id="worldStyle" class="form-control">
+	      {{#each worldStyles}}<option value="{{v}}" selected="{{selectedWorldStyle ..}}">{{l}}</option>{{/each}}
+	      </select></div></div>
+	    </div>
+	    <textarea class="form-control" rows="5">{{md}}</textarea>
+
+	    <div class="panel-group" id="interactionPanel" role="tablist" aria-multiselectable="true">
+	      <div class="panel panel-default">
+		<h4 class="panel-title"><a data-toggle="collapse" class="collapsed" data-parent="#interactionPanel" href="#interactionForm" aria-expanded="false" aria-controls="interactionForm">Interactions</a></h4>
+		<div id="interactionForm" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+		  <div class="panel-body">
+		    <div class="row">
+		      <div class="form-group col-sm-12"><label class="control-label col-sm-3">Type:</label><div class="col-sm-9">
+		      <select id="interactionType" class="form-control">
+			<option value="" selected="{{interactionTypeSelected ''}}">No interaction</option>
+			<option value="quiz" selected="{{interactionTypeSelected 'quiz'}}">Quizz</option>
+		      </select>
+		    </div>
+		      </div>
+		    </div>
+		    {{> runHooks interactionTypeValueHook}}
+		  </div>
+		</div>
+	      </div>
+	    </div>
+	  </form>
+	</div>
+	{{/with}}
+	<div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="save">Save changes</button>
+	</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+
