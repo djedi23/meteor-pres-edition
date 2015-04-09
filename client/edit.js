@@ -42,6 +42,13 @@ Template.toolbar.events({
 
       modules.collections.Presentations.update({_id:presId},{$pull: {steps: step}});
     }
+  },
+  'click #resetSession': function() {
+    session = {p: Session.get('currentPresentation')};
+    modules.collections.Sessions.insert(session);
+
+    Session.set('currentSession' , undefined);
+    console.log("Presentation session reseted by user");
   }
 });
 
@@ -166,7 +173,6 @@ Template.editMd.helpers({
                 })));
   },
   selectedNext: function(a){
-    console.log(this, this.v, a.next);
     return (this.v === a.next);
   }
 });

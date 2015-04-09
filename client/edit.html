@@ -5,6 +5,9 @@
 <template name="toolbar">
   <div class="glass btn-toolbar">
     {{> uaButton}}
+    {{#if isInRole 'speaker'}}
+    <button class="btn btn-transparent btn-xs" id="resetSession"><span class="glyphicon glyphicon-bullhorn"></span></button>
+    {{/if}}
     {{#if isInRole 'editor'}}
     <button class="btn btn-transparent btn-xs" id="addSlide"><span class="glyphicon glyphicon-plus"></span></button>
     <button class="btn btn-transparent btn-xs" id="removeSlide"><span class="glyphicon glyphicon-minus"></span></button>
