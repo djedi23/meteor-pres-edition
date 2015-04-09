@@ -12,16 +12,16 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.0.3.2');
-  api.use(['djedi:pres-collections',
-    'djedi:pres-interactions',
-    'alanning:roles'],
+  api.use(['djedi:pres-collections@0.0.1',
+    'djedi:pres-interactions@0.0.1',
+    'alanning:roles@1.2.13'],
     ['client', 'server']);
   api.use(['templating', 'jquery',
-    'numeral:numeral',
-    'djedi:modules',
+    'numeral:numeral@1.5.3',
+    'djedi:modules@0.1.0',
     'random',
     'reactive-var',
-    'useraccounts:bootstrap'],
+    'useraccounts:bootstrap@1.8.1'],
     ['client']);
   api.use(['mongo'],
     ['server']);
@@ -31,8 +31,6 @@ Package.onUse(function(api) {
     'client');
   api.addFiles(['methods/method.js'],
     ['client', 'server']);
-  // api.addFiles(['server/method.js'],
-  // 		 'server');
 });
 
 // Package.onTest(function(api) {
